@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect } from "react";
 import {
   View,
   StyleSheet,
@@ -7,12 +7,12 @@ import {
   SafeAreaView,
   StatusBar,
   Animated,
-} from 'react-native';
-import StaffRenderer from '../components/Staff/StaffRenderer';
-import PianoKeyboard from '../components/PianoKeyboard/PianoKeyboard';
-import { usePracticeStore } from '../store/practiceStore';
-import { generateSimpleSheet } from '../utils/musicUtils';
-import AudioManager from '../services/AudioManager';
+} from "react-native";
+import StaffRenderer from "../components/Staff/StaffRenderer";
+import PianoKeyboard from "../components/PianoKeyboard/PianoKeyboard";
+import { usePracticeStore } from "../store/practiceStore";
+import { generateSimpleSheet } from "../utils/musicUtils";
+import AudioManager from "../services/AudioManager";
 
 const PracticeScreen: React.FC = () => {
   const {
@@ -69,11 +69,13 @@ const PracticeScreen: React.FC = () => {
     resetPractice();
   };
 
-  const allNotes = currentSheet?.measures.flatMap(m => m.notes) || [];
-  const progress = allNotes.length > 0 ? (currentNoteIndex / allNotes.length) * 100 : 0;
-  const accuracy = stats.correctCount + stats.incorrectCount > 0
-    ? (stats.correctCount / (stats.correctCount + stats.incorrectCount)) * 100
-    : 0;
+  const allNotes = currentSheet?.measures.flatMap((m) => m.notes) || [];
+  const progress =
+    allNotes.length > 0 ? (currentNoteIndex / allNotes.length) * 100 : 0;
+  const accuracy =
+    stats.correctCount + stats.incorrectCount > 0
+      ? (stats.correctCount / (stats.correctCount + stats.incorrectCount)) * 100
+      : 0;
 
   return (
     <SafeAreaView style={styles.container}>
@@ -83,7 +85,7 @@ const PracticeScreen: React.FC = () => {
       <View style={styles.header}>
         <Text style={styles.title}>钢琴练习</Text>
         <Text style={styles.subtitle}>
-          {currentSheet?.title || '加载中...'}
+          {currentSheet?.title || "加载中..."}
         </Text>
       </View>
 
@@ -128,10 +130,7 @@ const PracticeScreen: React.FC = () => {
       {/* 反馈消息 */}
       {showFeedback && (
         <Animated.View
-          style={[
-            styles.feedbackContainer,
-            { opacity: feedbackOpacity },
-          ]}
+          style={[styles.feedbackContainer, { opacity: feedbackOpacity }]}
         >
           <Text style={styles.feedbackText}>{feedbackMessage}</Text>
         </Animated.View>
@@ -153,107 +152,107 @@ const PracticeScreen: React.FC = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f5f5f5',
+    backgroundColor: "#f5f5f5",
   },
   header: {
     padding: 20,
-    backgroundColor: '#fff',
+    backgroundColor: "#fff",
     borderBottomWidth: 1,
-    borderBottomColor: '#e0e0e0',
-    alignItems: 'center',
+    borderBottomColor: "#e0e0e0",
+    alignItems: "center",
   },
   title: {
     fontSize: 24,
-    fontWeight: 'bold',
-    color: '#333',
+    fontWeight: "bold",
+    color: "#333",
   },
   subtitle: {
     fontSize: 14,
-    color: '#666',
+    color: "#666",
     marginTop: 4,
   },
   statsContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
+    flexDirection: "row",
+    justifyContent: "space-around",
     padding: 15,
-    backgroundColor: '#fff',
+    backgroundColor: "#fff",
     marginTop: 1,
   },
   statItem: {
-    alignItems: 'center',
+    alignItems: "center",
   },
   statValue: {
     fontSize: 24,
-    fontWeight: 'bold',
-    color: '#2196F3',
+    fontWeight: "bold",
+    color: "#2196F3",
   },
   statLabel: {
     fontSize: 12,
-    color: '#666',
+    color: "#666",
     marginTop: 4,
   },
   progressContainer: {
     padding: 15,
-    backgroundColor: '#fff',
+    backgroundColor: "#fff",
     marginTop: 1,
   },
   progressBar: {
     height: 8,
-    backgroundColor: '#e0e0e0',
+    backgroundColor: "#e0e0e0",
     borderRadius: 4,
-    overflow: 'hidden',
+    overflow: "hidden",
   },
   progressFill: {
-    height: '100%',
-    backgroundColor: '#4CAF50',
+    height: "100%",
+    backgroundColor: "#4CAF50",
   },
   progressText: {
     fontSize: 12,
-    color: '#666',
-    textAlign: 'center',
+    color: "#666",
+    textAlign: "center",
     marginTop: 8,
   },
   staffContainer: {
     flex: 1,
     padding: 15,
-    justifyContent: 'center',
+    justifyContent: "center",
   },
   feedbackContainer: {
-    position: 'absolute',
-    top: '45%',
-    left: '10%',
-    right: '10%',
-    backgroundColor: 'rgba(0, 0, 0, 0.8)',
+    position: "absolute",
+    top: "45%",
+    left: "10%",
+    right: "10%",
+    backgroundColor: "rgba(0, 0, 0, 0.8)",
     padding: 20,
     borderRadius: 12,
-    alignItems: 'center',
+    alignItems: "center",
     zIndex: 1000,
   },
   feedbackText: {
     fontSize: 20,
-    fontWeight: 'bold',
-    color: '#fff',
-    textAlign: 'center',
+    fontWeight: "bold",
+    color: "#fff",
+    textAlign: "center",
   },
   controlsContainer: {
     padding: 15,
-    alignItems: 'center',
+    alignItems: "center",
   },
   resetButton: {
-    backgroundColor: '#2196F3',
+    backgroundColor: "#2196F3",
     paddingVertical: 12,
     paddingHorizontal: 30,
     borderRadius: 25,
-    shadowColor: '#000',
+    shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.2,
     shadowRadius: 3,
     elevation: 3,
   },
   resetButtonText: {
-    color: '#fff',
+    color: "#fff",
     fontSize: 16,
-    fontWeight: '600',
+    fontWeight: "600",
   },
 });
 
