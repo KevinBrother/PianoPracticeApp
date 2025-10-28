@@ -25,6 +25,8 @@ const PracticeScreen: React.FC = () => {
     setCurrentSheet,
     handleNoteInput,
     resetPractice,
+    setShowFeedback,
+    hideFeedback,
   } = usePracticeStore();
 
   const feedbackOpacity = React.useRef(new Animated.Value(0)).current;
@@ -43,23 +45,22 @@ const PracticeScreen: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    // 反馈动画
+    // 移除弹框反馈，改为琴谱上的提示
     if (showFeedback) {
-      Animated.sequence([
-        Animated.timing(feedbackOpacity, {
-          toValue: 1,
-          duration: 200,
-          useNativeDriver: true,
-        }),
-      ]).start();
-    } else {
-      Animated.timing(feedbackOpacity, {
-        toValue: 0,
-        duration: 300,
-        useNativeDriver: true,
-      }).start();
+      const timer = setTimeout(() => {
+        hideFeedback();
+      }, 1000);
+
+      return () => clearTimeout(timer);
     }
   }, [showFeedback]);
+
+  useEffect(() => {
+    // 监听反馈消息变化，显示错误提示
+    if (feedbackMessage.includes("正确音符是")) {
+      alert(feedbackMessage);
+    }
+  }, [feedbackMessage]);
 
   const handleKeyPress = (note: string, octave: number) => {
     handleNoteInput(note, octave);
@@ -126,15 +127,6 @@ const PracticeScreen: React.FC = () => {
           />
         )}
       </View>
-
-      {/* 反馈消息 */}
-      {showFeedback && (
-        <Animated.View
-          style={[styles.feedbackContainer, { opacity: feedbackOpacity }]}
-        >
-          <Text style={styles.feedbackText}>{feedbackMessage}</Text>
-        </Animated.View>
-      )}
 
       {/* 控制按钮 */}
       <View style={styles.controlsContainer}>
@@ -216,23 +208,6 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 15,
     justifyContent: "center",
-  },
-  feedbackContainer: {
-    position: "absolute",
-    top: "45%",
-    left: "10%",
-    right: "10%",
-    backgroundColor: "rgba(0, 0, 0, 0.8)",
-    padding: 20,
-    borderRadius: 12,
-    alignItems: "center",
-    zIndex: 1000,
-  },
-  feedbackText: {
-    fontSize: 20,
-    fontWeight: "bold",
-    color: "#fff",
-    textAlign: "center",
   },
   controlsContainer: {
     padding: 15,

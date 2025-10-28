@@ -118,6 +118,16 @@ export const usePracticeStore = create<PracticeState>((set, get) => ({
       // 更新统计
       state.updateStats(false);
 
+      // 错误计数逻辑
+      const incorrectCount = state.stats.incorrectCount + 1;
+
+      if (incorrectCount >= 3) {
+        set({
+          feedbackMessage: `正确音符是 ${result.correctNote?.pitch}${result.correctNote?.octave}，你按的是 ${note}${octave}`,
+          showFeedback: true,
+        });
+      }
+
       // 1秒后恢复为 WAITING 状态
       setTimeout(() => {
         const currentState = get();
