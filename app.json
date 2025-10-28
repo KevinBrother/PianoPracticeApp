@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "PianoPracticeApp",
-    "slug": "expokssbox",
+    "name": "Piano Practice",
+    "slug": "piano-practice-app",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -12,23 +12,41 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.kssbox.pianopractice",
+      "buildNumber": "1.0.0",
+      "infoPlist": {
+        "ITSAppUsesNonExemptEncryption": false
+      }
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
+      "package": "com.kssbox.pianopractice",
+      "versionCode": 1,
       "edgeToEdgeEnabled": true,
-      "predictiveBackGestureEnabled": false
+      "predictiveBackGestureEnabled": false,
+      "permissions": [
+        "android.permission.RECORD_AUDIO",
+        "android.permission.MODIFY_AUDIO_SETTINGS"
+      ]
     },
     "web": {
-      "favicon": "./assets/favicon.png"
+      "favicon": "./assets/favicon.png",
+      "bundler": "metro"
     },
+    "plugins": [
+      "expo-av"
+    ],
     "extra": {
       "eas": {
-        "projectId": "7d6faeb9-e597-436d-8b98-04b3e34ed504"
+        "projectId": "628e51dd-bc6b-432e-ac0a-2a653f4d2eec"
       }
     },
     "owner": "expokssbox"
