@@ -48,6 +48,57 @@ src/
 npm install
 ```
 
+### 2. EAS 云构建（推荐用于生产环境）
+
+使用 Expo Application Services 进行云构建，无需本地配置 Xcode 或 Android Studio。
+
+#### 快速开始
+
+```bash
+# 1. 安装 EAS CLI（全局安装一次即可）
+npm install -g eas-cli
+
+# 2. 登录 Expo 账号
+eas login
+
+# 3. 构建 Android 预览版（推荐第一次尝试）
+npm run build:android:preview
+# 或使用完整命令
+eas build --platform android --profile preview
+
+# 4. 等待构建完成（约 5-15 分钟）
+# 5. 下载生成的 APK 文件并安装到设备测试
+```
+
+#### 所有可用的构建命令
+
+```bash
+# Android 构建
+npm run build:android:preview      # 预览版 APK（测试用）
+npm run build:android:production   # 生产版 APK（发布用）
+npm run build:android:aab          # AAB 格式（Google Play 上传用）
+
+# iOS 构建
+npm run build:ios:preview          # 预览版（模拟器）
+npm run build:ios:production       # 生产版（App Store）
+
+# 同时构建两个平台
+npm run build:all:preview          # 预览版
+npm run build:all:production       # 生产版
+
+# 提交到应用商店
+npm run submit:android             # 提交到 Google Play
+npm run submit:ios                 # 提交到 App Store
+
+# 查看构建状态
+npm run build:list                 # 查看所有构建
+npm run build:status               # 查看最近 5 个构建
+```
+
+**详细的 EAS 构建指南**: 请查看 [EAS_BUILD_GUIDE.md](./EAS_BUILD_GUIDE.md)
+
+---
+
 ### 2. 启动开发服务器
 
 ```bash
