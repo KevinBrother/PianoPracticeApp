@@ -54,43 +54,73 @@ export function getNoteIndexOnStaff(pitch: string, octave: number, clef: 'treble
 }
 
 /**
- * 生成钢琴键盘数据
- * @param octaves 生成多少个八度
- * @param startOctave 起始八度 (默认从 C4 开始)
+ * 生成钢琴键盘数据（标准88键钢琴布局）
+ * 琴键顺序从左到右：
+ * [钢琴最左端]
+ * A2, A#2, B2 | (大字二组)
+ * C1, C#1, D1, D#1, E1, F#1, G1, G#1, A1, A#1, B1 | (大字一组)
+ * C, C#, D, D#, E, F, F#, G, G#, A, A#, B | (大字组)
+ * c, c#, d, d#, e, f, f#, g, g#, a, a#, b | (小字组)
+ * c1, c#1, d1, d#1, e1, f1, f#1, g1, g#1, a1, a#1, b1 | (小字一组) <-- 中央C在这里 (c1)
+ * c2, c#2, d2, d#2, e2, f2, f#2, g2, g#2, a2, a#2, b2 | (小字二组)
+ * c3, c#3, d3, d#3, e3, f3, f#3, g3, g#3, a3, a#3, b3 | (小字三组)
+ * c4, c#4, d4, d#4, e4, f4, f#4, g4, g#4, a4, a#4, b4 | (小字四组)
+ * c5 | (小字五组)
+ * [钢琴最右端]
+ * 
+ * 注意：内部使用科学音高记谱法 (A0-C8)，但显示使用传统记谱法
+ * 映射关系：
+ * - 科学记谱 A0, B0 = 传统记谱 A2, B2 (大字二组)
+ * - 科学记谱 C1-B1 = 传统记谱 C1-B1 (大字一组)
+ * - 科学记谱 C2-B2 = 传统记谱 C-B (大字组)
+ * - 科学记谱 C3-B3 = 传统记谱 c-b (小字组)
+ * - 科学记谱 C4-B4 = 传统记谱 c1-b1 (小字一组，中央C)
+ * - 科学记谱 C5-B5 = 传统记谱 c2-b2 (小字二组)
+ * - 科学记谱 C6-B6 = 传统记谱 c3-b3 (小字三组)
+ * - 科学记谱 C7-B7 = 传统记谱 c4-b4 (小字四组)
+ * - 科学记谱 C8 = 传统记谱 c5 (小字五组)
  */
-export function generatePianoKeys(octaves: number = 2, startOctave: number = 4): PianoKey[] {
+export function generatePianoKeys(): PianoKey[] {
   const keys: PianoKey[] = [];
-  const whiteNotes = ['C', 'D', 'E', 'F', 'G', 'A', 'B'];
-  const blackNotes = ['C#', 'D#', '', 'F#', 'G#', 'A#', '']; // E# 和 B# 不存在
-
-  for (let octave = startOctave; octave < startOctave + octaves; octave++) {
-    for (let i = 0; i < whiteNotes.length; i++) {
-      const note = whiteNotes[i];
+  
+  // 标准钢琴键盘从 A0 开始到 C8 结束（科学音高记谱法）
+  const allNotes = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
+  
+  // 从 A0 开始（科学记谱A0/B0 = 传统记谱A2/B2，大字二组）
+  ['A', 'A#', 'B'].forEach(note => {
+    const frequency = getNoteFrequency(note, 0);
+    keys.push({
+      id: `${note}0`,
+      note,
+      octave: 0,
+      isBlack: note.includes('#'),
+      frequency,
+    });
+  });
+  
+  // 生成 C1 到 B7（完整的八度）
+  for (let octave = 1; octave <= 7; octave++) {
+    for (const note of allNotes) {
       const frequency = getNoteFrequency(note, octave);
-
-      // 添加白键
       keys.push({
         id: `${note}${octave}`,
         note,
         octave,
-        isBlack: false,
+        isBlack: note.includes('#'),
         frequency,
       });
-
-      // 添加黑键 (如果存在)
-      const blackNote = blackNotes[i];
-      if (blackNote) {
-        const blackFreq = getNoteFrequency(blackNote, octave);
-        keys.push({
-          id: `${blackNote}${octave}`,
-          note: blackNote,
-          octave,
-          isBlack: true,
-          frequency: blackFreq,
-        });
-      }
     }
   }
+  
+  // 最后添加 C8（科学记谱C8 = 传统记谱c5，小字五组）
+  const c8Frequency = getNoteFrequency('C', 8);
+  keys.push({
+    id: 'C8',
+    note: 'C',
+    octave: 8,
+    isBlack: false,
+    frequency: c8Frequency,
+  });
 
   return keys;
 }

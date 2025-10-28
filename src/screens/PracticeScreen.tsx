@@ -144,7 +144,7 @@ const PracticeScreen: React.FC = () => {
       </View>
 
       {/* 钢琴键盘 */}
-      <PianoKeyboard onNotePress={handleKeyPress} octaves={2} startOctave={4} />
+      <PianoKeyboard onNotePress={handleKeyPress} />
     </SafeAreaView>
   );
 };
